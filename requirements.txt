@@ -9,16 +9,14 @@ Flask
 azure-storage-blob
 gunicorn
 deep-translator
+pytest
+
 # suivi dans Azure Application Insight
 azure-monitor-opentelemetry-exporter
 opentelemetry-api
 opentelemetry-sdk
 
-# suivi avec opencensus
-# OpenCensus for logging to Azure Monitor
-# opencensus>=0.11.0
-# opencensus-ext-azure>=1.1.9
-
-# Azure Core libraries
-# azure-core>=1.26.0
-# azure-identity>=1.13.0
+# sous Windows il a été nécessaire d'installer:
+# Visual C++ build Tools (site Microsoft)
+# jsonschema
+# pygments
