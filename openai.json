@@ -1,0 +1,181 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Sentiment Analysis API",
+    "description": "API pour l'analyse de sentiment à partir de textes en français ou traduits en anglais. Modèle MLflow chargé depuis Azure.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "tweetsentimentanalysiseco-fuetaqf3hbezegch.francecentral-01.azurewebsites.net",
+      "description": "API d'analyse de tweets déployée sur Azure"
+    },
+    {
+      "url": "http://localhost:5001",
+      "description": "API locale pour le développement"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Page d'accueil",
+        "description": "Affiche une interface HTML permettant de tester l'analyse de sentiment.",
+        "responses": {
+          "200": {
+            "description": "Page HTML chargée avec succès."
+          }
+        }
+      },
+      "post": {
+        "summary": "Analyse de sentiment via formulaire",
+        "description": "Soumet une phrase pour analyse de sentiment via le formulaire HTML.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "Texte en français soumis pour analyse.",
+                    "example": "J'adore ce produit !"
+                  },
+                  "feedback": {
+                    "type": "string",
+                    "enum": ["correct", "incorrect"],
+                    "description": "Retour utilisateur sur la prédiction du sentiment.",
+                    "example": "correct"
+                  }
+                },
+                "required": ["text"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retourne la prédiction et, le cas échéant, les erreurs.",
+            "content": {
+              "text/html": {}
+            }
+          },
+          "400": {
+            "description": "Erreur de validation des données."
+          }
+        }
+      }
+    },
+    "/predict": {
+      "post": {
+        "summary": "Analyse de sentiment via JSON",
+        "description": "Analyse une phrase transmise via un JSON et retourne la prédiction.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "Texte à analyser, en français ou toute autre langue.",
+                    "example": "Je suis très content de ce service."
+                  }
+                },
+                "required": ["text"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retourne la prédiction pour le texte soumis.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "original_text": {
+                      "type": "string",
+                      "description": "Texte original soumis.",
+                      "example": "Je suis très content de ce service."
+                    },
+                    "translated_text": {
+                      "type": "string",
+                      "description": "Texte traduit en anglais avant analyse.",
+                      "example": "I am very happy with this service."
+                    },
+                    "prediction": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      },
+                      "description": "Prédiction du modèle. Par exemple, 0 pour 'Positif' et 1 pour 'Négatif'.",
+                      "example": [0]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne lors de la prédiction.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Message d'erreur décrivant le problème.",
+                      "example": "Erreur lors de la prédiction."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TextInput": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Texte à analyser, en français ou autre langue.",
+            "example": "Le produit est excellent !"
+          }
+        },
+        "required": ["text"]
+      },
+      "PredictionResponse": {
+        "type": "object",
+        "properties": {
+          "original_text": {
+            "type": "string",
+            "description": "Texte original soumis pour analyse.",
+            "example": "Le produit est excellent !"
+          },
+          "translated_text": {
+            "type": "string",
+            "description": "Texte traduit en anglais pour le modèle.",
+            "example": "The product is excellent!"
+          },
+          "prediction": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Prédiction du modèle.",
+            "example": [0]
+          }
+        }
+      }
+    }
+  }
+}
