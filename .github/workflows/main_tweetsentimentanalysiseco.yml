@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build, Test, and Deploy Python App to Azure Web App - TweetSentimentAnalysisECO
+name: Build and deploy Python app to Azure Web App - TweetSentimentAnalysisECO
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,13 +29,8 @@ jobs:
       
       - name: Install dependencies
         run: pip install -r requirements.txt
-
-      - name: Run tests with pytest
-        run: |
-          source venv/bin/activate
-          pytest
-        env:
-          PYTHONPATH: ${{ github.workspace }}  # Ajoute le chemin racine au PYTHONPATH pour éviter les problèmes d'importation
+        
+      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
@@ -50,15 +45,15 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build-and-test  # Ce job ne s'exécutera que si "build-and-test" réussit
+    needs: build
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write  # Requis pour demander un JWT
+      id-token: write #This is required for requesting the JWT
 
     steps:
-      - name: Download artifact from build-and-test job
+      - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: python-app
@@ -66,16 +61,18 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5D84BD4E90094FF5987D5831A2ADEB23 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_AFECED4504D64E9680A288FCE216CEF8 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_76381FE1A4E9453995396052CFFC3D97 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C96CCF1649EA4596A7CBE04CB71B14A3 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6E431D8EDA354BE8A6C19474875F1EFB }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C16DF99DC726458A8039071FFD2944CE }}
 
-      - name: Deploy to Azure Web App
+      - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'TweetSentimentAnalysisECO'
           slot-name: 'Production'
+          
