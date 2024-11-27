@@ -28,8 +28,10 @@ jobs:
           source venv/bin/activate
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
-
+        run: |
+          echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
+          pip install -r requirements.txt
+  
       - name: Set FLASK_ENV to testing
         run: echo "FLASK_ENV=testing" >> $GITHUB_ENV
 
