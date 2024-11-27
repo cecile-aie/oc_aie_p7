@@ -1,6 +1,6 @@
+import os
 import pandas as pd
 from flask import Flask, request, render_template, jsonify
-import os
 import mlflow.pyfunc
 from deep_translator import GoogleTranslator
 from opentelemetry import trace
@@ -9,7 +9,6 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 from azure.monitor.opentelemetry.exporter import AzureMonitorTraceExporter
 from datetime import datetime
-
 # Configuration OpenTelemetry pour Azure Application Insights
 resource = Resource.create(attributes={"service.name": "VotreApplication"})
 trace.set_tracer_provider(TracerProvider(resource=resource))
@@ -21,24 +20,38 @@ span_processor = SimpleSpanProcessor(exporter)
 trace.get_tracer_provider().add_span_processor(span_processor)
 tracer = trace.get_tracer(__name__)
 
+# Vérifiez l'état de FLASK_ENV
+FLASK_ENV = os.getenv("FLASK_ENV", "production")
+print(f"FLASK_ENV actuel : {FLASK_ENV}")
+
+# Détection du mode test
+IS_TESTING = FLASK_ENV == "testing"
+print(f"Mode test activé : {IS_TESTING}")
+
 # Chemin vers le stockage monté
 LOCAL_MODEL_PATH = "/mnt/azureblob"
 
 # Charger le modèle MLflow depuis le chemin monté
 def load_model():
+    if IS_TESTING:
+        # Simulez un modèle fictif pour les tests
+        print("En mode test : modèle factice chargé.")
+        return lambda x: ["mocked_prediction"]
     if not os.path.exists(LOCAL_MODEL_PATH):
         raise FileNotFoundError(f"Le chemin {LOCAL_MODEL_PATH} n'existe pas ou le stockage n'est pas monté.")
     return mlflow.pyfunc.load_model(LOCAL_MODEL_PATH)
 
-# Initialiser le modèle
+# Charger le modèle uniquement si ce n'est pas un test
 model = None
-try:
-    model = load_model()
-except FileNotFoundError as e:
-    print(f"Erreur de chargement du modèle : {e}")
-
-if model is None:
-    raise RuntimeError("Le modèle n'a pas pu être chargé. Vérifiez le chemin ou le stockage monté.")
+if not IS_TESTING:
+    try:
+        print("Chargement du modèle en cours...")
+        model = load_model()
+    except FileNotFoundError as e:
+        print(f"Erreur de chargement du modèle : {e}")
+        raise RuntimeError("Le modèle n'a pas pu être chargé. Vérifiez le chemin ou le stockage monté.")
+else:
+    print("Mode test activé : le modèle ne sera pas chargé.")
 
 # Initialiser Flask
 app = Flask(__name__)
