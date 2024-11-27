@@ -1,1 +1,1 @@
-""" Ce package contient des modules de test de l'application Tweet Sentiment. """
+""" Ce package contient des modules de test de l'application Tweet Sentiment """
