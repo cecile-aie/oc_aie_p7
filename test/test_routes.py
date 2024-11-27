@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import MagicMock, patch
 from flask import Flask
-from ..app import app  # Assurez-vous que l'application Flask est importée correctement
+from app import app  # Assurez-vous que l'application Flask est importée correctement
 
 # chemin vers le répertoire parent
 import sys

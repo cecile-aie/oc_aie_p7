@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from ..app import model
+from app import model
 
 # Cette fonction doit être appelée avant chaque test
 def setUp():
