@@ -132,23 +132,37 @@ def home():
 @app.route("/predict", methods=["POST"])
 def predict():
     try:
+        # Extraction des données JSON
         data = request.get_json()
-        original_text = data.get("text", "")
-        translated_text = translate_to_english(original_text)
+        original_text = data.get("text")
+        if not original_text:
+            return jsonify({"error": "Texte manquant"}), 400
+        
+        # Traduction
+        try:
+            translated_text = translate_to_english(original_text)
+        except Exception as e:
+            log_error("TranslationError", f"Erreur lors de la traduction : {str(e)}")
+            return jsonify({"error": "Erreur lors de la traduction"}), 500
+        
+        # Prédiction
         input_data = pd.DataFrame([{"text": translated_text}])
         try:
             predictions = model.predict(input_data)
         except Exception as e:
-            log_error("PredictionError", e)
-            raise RuntimeError("Erreur lors de la prédiction.")
+            log_error("PredictionError", f"Erreur lors de la prédiction : {str(e)}")
+            return jsonify({"error": "Erreur lors de la prédiction"}), 500
+        
+        # Retourner la réponse
+        predictions_list = predictions.tolist() if hasattr(predictions, 'tolist') else predictions
         return jsonify({
             "original_text": original_text,
             "translated_text": translated_text,
-            "prediction": predictions.tolist()
+            "prediction": predictions_list
         })
     except Exception as e:
-        log_error("Error", e)
-        return jsonify({"error": str(e)}), 500
+        log_error("Error", f"Erreur générale : {str(e)}")
+        return jsonify({"error": "Erreur lors du traitement de la requête"}), 500
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5001))
