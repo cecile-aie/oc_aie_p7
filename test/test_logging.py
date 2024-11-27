@@ -1,4 +1,4 @@
-from app import log_error, tracer
+from ..app import log_error, tracer
 
 def test_log_error():
     '''Vérifie que la fonction log_error ne génère pas d'erreurs imprévues
