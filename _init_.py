@@ -1,0 +1,1 @@
+""" Ce package contient des modules d'exécution de l'application Tweet Sentiment. """
