@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import MagicMock, patch
 from flask import Flask
 from app import app  # Assurez-vous que l'application Flask est importée correctement
 
@@ -9,9 +10,24 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 @pytest.fixture
 def client():
-    app.config['TESTING'] = True
+    # Définir l'environnement en mode test
+    os.environ["FLASK_ENV"] = "testing"
+    app.config["TESTING"] = True  # Flask configuration
     with app.test_client() as client:
         yield client
+
+@pytest.fixture
+def mock_model():
+    # Crée un faux modèle
+    fake_model = MagicMock()
+    fake_model.predict.return_value = [1]  # Simule un sentiment négatif
+    return fake_model
+
+# Patcher le modèle pour éviter de charger le modèle réel
+@pytest.fixture(autouse=True)
+def patch_model(mock_model):
+    with patch("app.model", mock_model):  # Remplace `app.model` par un mock
+        yield
 
 def test_home_page_get(client):
     response = client.get("/")
