@@ -1,4 +1,5 @@
-[![Build and deploy Python app to Azure Web App - TweetSentimentAnalysisECO](https://github.com/cecile-aie/oc_aie_p7/actions/workflows/main_tweetsentimentanalysiseco.yml/badge.svg?event=deployment)](https://github.com/cecile-aie/oc_aie_p7/actions/workflows/main_tweetsentimentanalysiseco.yml)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/cecile-aie/oc_aie_p7/Build%20and%20deploy%20Python%20app%20to%20Azure%20Web%20App%20-%20TweetSentimentAnalysisECO)
+
 
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/cecile-aie/oc_aie_p7)
 
