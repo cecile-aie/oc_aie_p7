@@ -1,10 +1,4 @@
----
-title: "Comment utiliser Markdown sur GitHub"
-date: "2024-11-28"
-tags: ["Markdown", "GitHub", "VS Code"]
-categories: ["Tutoriels"]
-author: "Cécile"
----
+[![Build and deploy Python app to Azure Web App - TweetSentimentAnalysisECO](https://github.com/cecile-aie/oc_aie_p7/actions/workflows/main_tweetsentimentanalysiseco.yml/badge.svg?event=deployment)](https://github.com/cecile-aie/oc_aie_p7/actions/workflows/main_tweetsentimentanalysiseco.yml)
 
 # oc_aiep7
 OpenClassRooms Artificial Intelligence Engineer - P7 Réalisez une analyse de sentiments
