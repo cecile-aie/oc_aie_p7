@@ -45,6 +45,7 @@ jobs:
           pytest --maxfail=5 --disable-warnings
         env:
           FLASK_ENV: testing
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
       
       - name: Zip artifact for deployment
         run: |
