@@ -6,3 +6,5 @@
 # oc_aiep7
 OpenClassRooms Artificial Intelligence Engineer - P7 Réalisez une analyse de sentiments <br>
 Le site est en cours de développement
+
+[Lire l'article : p7_ArticleBlog](blog/p7_ArticleBlog.md)
