@@ -8,3 +8,8 @@ OpenClassRooms Artificial Intelligence Engineer - P7 Réalisez une analyse de se
 Le site est en cours de développement
 
 [Lire l'article : p7_ArticleBlog](blog/p7_ArticleBlog.md)
+
+L'API est exposée dans Azure Webapp <br>
+[UI de la documentation](https://tweetsentimentanalysiseco-fuetaqf3hbezegch.francecentral-01.azurewebsites.net/docs)
+<br>
+[Accès direct à la documentation en json](https://tweetsentimentanalysiseco-fuetaqf3hbezegch.francecentral-01.azurewebsites.net/openapi.json)  <br>
