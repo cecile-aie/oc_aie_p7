@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, send_from_directory, render_template_string
 import mlflow.pyfunc
 from deep_translator import GoogleTranslator
 from opentelemetry import trace
@@ -163,6 +163,38 @@ def predict():
     except Exception as e:
         log_error("Error", f"Erreur générale : {str(e)}")
         return jsonify({"error": "Erreur lors du traitement de la requête"}), 500
+
+# Expositon de la documentation de l'API
+# Route pour exposer le fichier openapi.json
+@app.route('/openapi.json', methods=['GET'])
+def get_openapi_json():
+    return send_from_directory('static/api_docs', 'openapi.json')
+
+# Route pour afficher Swagger UI avec CDN (Content Delivery Network - pas de ressource Swagger locale)
+@app.route('/docs', methods=['GET'])
+def swagger_ui():
+    html_content = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Swagger UI</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.js"></script>
+    </head>
+    <body>
+        <div id="swagger-ui"></div>
+        <script>
+            window.onload = function() {
+                SwaggerUIBundle({
+                    url: '/openapi.json',
+                    dom_id: '#swagger-ui',
+                });
+            };
+        </script>
+    </body>
+    </html>
+    """
+    return render_template_string(html_content)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5001))

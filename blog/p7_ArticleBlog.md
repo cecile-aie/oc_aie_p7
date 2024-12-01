@@ -53,7 +53,7 @@ Stockage de la conception, du traitement des données, de la formation du moèdl
 ### Outils choisis
 - Pipeline de données: Automatisé dans un notebook<br>
 
-![alt text](image-1.png)
+![alt text](image-3.png)
 - Pipeline ML: MLFlow utilisé à la fois pour l'enregistrement des expérimentation et des résultats et pour le registre de modèles.<br>
 - Pipeline d'application: Avec un dossier de travail configuré comme dépôt local Git, Visual Studio Code possède l'ensemble des extensions permettant de visualiser les modifications du code et de gérer le versionning, puis dans les étapes de développement de réaliser les tests.<br>
 
