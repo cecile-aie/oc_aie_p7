@@ -116,9 +116,10 @@ La suppression de certains signes de ponctuation non informatifs (, . ; :) et un
 
 J'ai utilisé un encodeur étudié spécifiquement pour l'analyse de sentiments. SentimentIntensityAnalyser (SIA de NLTK) attribue un score de sentiment à une une phrase, en combinant simplement les scores de chaque mot de la phrase. Voici un example avec un tweet brut, après nettoyage, après tokenisation/lemmatisation:<br>
 
-![alt text](image-1.png)<br>
-![<alt text>](image-2.png)<br>
-![alt text](image-4.png)<br>
+![alt text](image-1.png)
+![alt text](image-2.png)
+![alt text](image-4.png)
+
 <i>Score SIA d'une phrase exemple selon l'étape de pré-traitement </i>
 
 ## Métrique adaptée à la problématique métier
