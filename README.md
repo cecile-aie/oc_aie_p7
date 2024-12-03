@@ -1,4 +1,5 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/cecile-aie/oc_aie_p7)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/cecile-aie/oc_aie_p7)
 
 
 # Projet: Détectez les Bad Buzz grâce au Deep Learning
