@@ -284,7 +284,7 @@ Cinq groupes de tests ont été mis en place:
 
 ## API déployée [Analyse de sentiment des tweets](https://tweetsentimentanalysiseco-fuetaqf3hbezegch.francecentral-01.azurewebsites.net/)
 
-[![PLan de déploiement](image-22.png)]([URL/de/la/page/cible](https://tweetsentimentanalysiseco-fuetaqf3hbezegch.francecentral-01.azurewebsites.net/))
+[![Lien vers l'api hébergée](image-22.png)](https://tweetsentimentanalysiseco-fuetaqf3hbezegch.francecentral-01.azurewebsites.net/)
 
 
 L'API utilise DeepTranslator (Google), accepte jusqu'à 500 caractères et supporte tout types de caractères. Des tests de sécurité manuels ont été menés, l'application traite les scripts comme des chaines - par contre j'ai évité de les stocker.
@@ -315,6 +315,7 @@ D'un point de vue ML la leçon est claire: même si du côté du développeur ce
 La mise en oeuvre de MLOPS est une vraie école de rigueur au départ:<br>
 - il faut concevoir les trackings de façon à pouvoir les comparer
 - logger les modèles demande de respecter la méthodologie de MLFlow
+- le versionning dans Git/Github demande de la pratique
 - Github actions est puissant mais il faut savoir repenser les choses dans un environnement isolé
 
-Quand on a passé le temps nécessaire à la mise en place de ces étapes le déploiement devient une formalité 😉
+Quand on a passé le temps nécessaire à la mise en place de ces étapes le déploiement devient une formalité 😉 par contre il ne faut pas négliger l'étape ultime de documentation.
