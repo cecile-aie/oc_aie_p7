@@ -54,7 +54,7 @@ jobs:
           "blog/*" \
           "notebooks/*" \
           "venv/*" \
-          "_pycache_`/" \
+          "_pycache_/" \
           ".pytest_cache/" \
           ".vscode/" \
           "mlruns/" \
