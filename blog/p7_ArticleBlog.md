@@ -98,13 +98,13 @@ Les tweets constituent une variante du langage commun avec des expressions exace
         
 - Réduction de la répétition des caractères, dans cet exemple les points d'exclamation<br>
         Original: Sitting in the airport, waiting for the plane to arrive, so we can depart!!!   http://twitpic.com/6ebzo<br>
-        <span style="color: mediumspringgreen;">Modifié: Sitting in the airport, waiting for the plane to arrive, so we can depart!!  <url> 
+        <span style="color: mediumspringgreen;">Modifié: Sitting in the airport, waiting for the plane to arrive, so we can depart!! <url> 
         
 
 
 - Utilisation de dictionnaires d'abbréviations, d'expression d'argot et d'emoticons pour interpréter les caractères
 - Suppression des caractères spéciaux résiduels (@, #, caractères non ASCII)
-- Expansion des contractions et application d'un correcteur d'orthographe (languagetoolPython)
+- Expansion des contractions et application d'un correcteur d'orthographe (languagetoolPython)<br>
         Original: @DavidArchie Hope you, your team, Cookie &amp; his crew have a safe trip home! You guys are all amazing! Hope you'll get some R&amp;R time now.<br>
         <span style="color: forestgreen;">Modifié: <mention> Hope you, your team, Cookie & his crew have a safe trip home! You guys are all amazing! Hope you will get some Randy time now. 
         
@@ -264,7 +264,7 @@ Avec une variante de Bert entrainé spécifiquement avec des tweets la version p
 
 # Étape 3 : Déploiement
 
-Le modèle Bert pré-entrainé n'a pas pu être déployé sur la solution choisie (Azure compte gratuit) qui octroit 1 Go de stockage ce qui n'est pas suffisant pour importer les bibliothèques nécessaires à l'exécution du modèle plus le chargement du modèle lui-même.<br>
+Le modèle Bert pré-entrainé n'a pas pu être déployé sur la solution choisie (Azure compte gratuit). Le poids du modèle n'est pas en cause, il a été allégé par quantisation et élagage. Par contre il n'a pas été possible de concilier les versions des dépendances entre les environnements locaux et celui de la plateforme webapp fournie par Azure.<br>
 J'ai donc déployé le modèle combinant la régression logistique avec SIA.
 
 ## Pipeline de déploiement continu
