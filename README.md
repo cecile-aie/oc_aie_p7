@@ -26,12 +26,12 @@ La démarche et le travail réalisé sont détaillés dans l'article [Mise en oe
 
 # Utilisation de l'API
 
-Interface web: [Analyse de sentiment des tweets](https://tweetsentimentanalysiseco-fuetaqf3hbezegch.francecentral-01.azurewebsites.net/)
+Interface web: [Analyse de sentiment des tweets](https://tweetseco-aqb3breuc4f6bsaj.francecentral-01.azurewebsites.net/)
 
 Documentation de l'API <br>
-[UI de la documentation](https://tweetsentimentanalysiseco-fuetaqf3hbezegch.francecentral-01.azurewebsites.net/docs)
+[UI de la documentation](https://tweetseco-aqb3breuc4f6bsaj.francecentral-01.azurewebsites.net/docs)
 <br>
-[Accès direct à la documentation en json](https://tweetsentimentanalysiseco-fuetaqf3hbezegch.francecentral-01.azurewebsites.net/openapi.json)  <br>
+[Accès direct à la documentation en json](https://tweetseco-aqb3breuc4f6bsaj.francecentral-01.azurewebsites.net/openapi.json)  <br>
 
 # Environnement
 

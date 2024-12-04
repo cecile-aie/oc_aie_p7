@@ -286,9 +286,9 @@ Cinq groupes de tests ont été mis en place:
 
 💡Le passage en mode test à travers une variable d'environnement permet d'éviter de charger le modèle et de reproduire un chemin local. Cela est particulièrement utile pour les tests dans Github Actions.
 
-## API déployée [Analyse de sentiment des tweets](https://tweetsentimentanalysiseco-fuetaqf3hbezegch.francecentral-01.azurewebsites.net/)
+## API déployée [Analyse de sentiment des tweets](https://tweetseco-aqb3breuc4f6bsaj.francecentral-01.azurewebsites.net/)
 
-[![Lien vers l'api hébergée](image-22.png)](https://tweetsentimentanalysiseco-fuetaqf3hbezegch.francecentral-01.azurewebsites.net/)
+[![Lien vers l'api hébergée](image-22.png)](https://tweetseco-aqb3breuc4f6bsaj.francecentral-01.azurewebsites.net/)
 
 
 L'API utilise DeepTranslator (Google), accepte jusqu'à 500 caractères et supporte tout types de caractères. Des tests de sécurité manuels ont été menés ; l'application traite les scripts comme des chaines - par contre j'ai évité de les stocker 😉.
