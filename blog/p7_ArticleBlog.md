@@ -12,7 +12,7 @@ author: "Cécile"
 
 Un client dans le domaine du transport aérien nous a demandé un prototype fonctionnel d'un modèle permettant de détecter les tweets à connotation négative. Cette problématique liée à la modélisation du langage (Natural Language Processing ou NLP) est déjà largement étudiée. On trouve pour y répondre un arsenal de bibliothèques, de modèles spécifiquement entrainés, voire de services entièrement packagés.<br>
 J'ai testé différentes approches avec un objectif focalisé autant sur l'exactitude de prédiction (l'accuracy) que sur le temps d'entrainement et le temps de réponse du modèle une fois déployé.<br>
-L'objectif de cet article est d'illustrer comment MLOPS nous aide dans une démarche d'élaboration et de mise en production d'un modèle. Je n'ai pas détaillé le travail de conception Machine Learning/Deep Learning dans dans le cadre du NPL (Language Natural Processing) mais il y a j'espère suffisament d'encarts d'information pour que les non spécialistes s'y retrouvent 😜.
+L'objectif de cet article est d'illustrer comment MLOPS nous aide dans une démarche d'élaboration et de mise en production d'un modèle. Je n'ai pas détaillé le travail de conception Machine Learning/Deep Learning dans dans le cadre du NPL (Language Natural Processing) mais il y a j'espère suffisament d'encarts d'information pour que les non-spécialistes s'y retrouvent 😜.
 
 
 ## Les outils : Bibliothèques d'analyse, méthodes de modélisation du langage
@@ -38,15 +38,15 @@ A l'instar de DeOps, MLOps est le trait d'union entre les développeurs et l'op�
 
 ### Principes de MLOPS
 
-1 - Automatisation
+1 - Automatisation<br>
 Au départ, le processus de mise en œuvre d'un modèle est manuel et itératif, incluant la préparation, la validation des données, et la création de modèles.<br>
 Une fois automatisé, le modèle se forme et se recycle de manière continue, en validant les nouvelles données dès leur disponibilité.<br>
 L'automatisation du pipeline CI/CD (Intégration continue/Développement continu)permet d'intégrer et de déployer des modèles ML de manière continue et sans intervention manuelle.
 
-2 - Intégration continue
+2 - Intégration continue<br>
 L'intégration continue permet de valider les tests, les données, les schémas et les modèles, tout en déployant automatiquement des pipelines ML ou en annulant les modifications non désirées.
 
-3 - Reproductibilité
+3 - Reproductibilité<br>
 Stockage de la conception, du traitement des données, de la formation du moèdle, du déploiement afin que les modèles soient facilement reproduits.
 
 ### Avantages de MLOPS
@@ -59,13 +59,14 @@ Stockage de la conception, du traitement des données, de la formation du moèdl
 
 ### Outils choisis
 - Pipeline de données: Automatisé dans un notebook<br>
+- Pipeline ML: MLFlow utilisé à la fois pour l'enregistrement des expérimentation et des résultats et pour le registre de modèles.<br>
 
 ![alt text](image-7.png)
 ![alt text](image-9.png)
 ![alt text](image-8.png)
 <i> Interface MLFLOW: Expérimentations, métriques et artéfacts loggés </i>
 
-- Pipeline ML: MLFlow utilisé à la fois pour l'enregistrement des expérimentation et des résultats et pour le registre de modèles.<br>
+
 - Pipeline d'application: Avec un dossier de travail configuré comme dépôt local Git, Visual Studio Code possède l'ensemble des extensions permettant de visualiser les modifications du code et de gérer le versionning, puis dans les étapes de développement de réaliser les tests. L'application est déployée via un workflow Github actions.<br>
 
 # Étape 1 : Analyse et préparation des données
@@ -92,18 +93,21 @@ Les tweets constituent une variante du langage commun avec des expressions exace
 - Détection des expressions héritées de html générées lors du passage en texte brut (ex: &Amp)
 - Remplacement des url et des citations par des balises <url> et <mention> <br>
         Original: was totally crushed when I found that much looked forward to plane read: Air Kisses by @zotheysay, had sold out at airport <br>
-        <span style="color: darkgreen;">Modifié: was totally crushed when I found that much looked forward to plane read: Air Kisses by <mention>, had sold out at airport</span>
+        <span style="color: darkgreen;">Modifié: was totally crushed when I found that much looked forward to plane read: Air Kisses by <mention>, had sold out at airport 
+        </span>
         
 - Réduction de la répétition des caractères, dans cet exemple les points d'exclamation<br>
         Original: Sitting in the airport, waiting for the plane to arrive, so we can depart!!!   http://twitpic.com/6ebzo<br>
-        <span style="color: mediumspringgreen;">Modifié: Sitting in the airport, waiting for the plane to arrive, so we can depart!!  <url></span>
+        <span style="color: mediumspringgreen;">Modifié: Sitting in the airport, waiting for the plane to arrive, so we can depart!!  <url> 
+        </span>
 
 
 - Utilisation de dictionnaires d'abbréviations, d'expression d'argot et d'emoticons pour interpréter les caractères
 - Suppression des caractères spéciaux résiduels (@, #, caractères non ASCII)
 - Expansion des contractions et application d'un correcteur d'orthographe (languagetoolPython)
         Original: @DavidArchie Hope you, your team, Cookie &amp; his crew have a safe trip home! You guys are all amazing! Hope you'll get some R&amp;R time now.<br>
-        <span style="color: forestgreen;">Modifié: <mention> Hope you, your team, Cookie & his crew have a safe trip home! You guys are all amazing! Hope you will get some Randy time now.</span>
+        <span style="color: forestgreen;">Modifié: <mention> Hope you, your team, Cookie & his crew have a safe trip home! You guys are all amazing! Hope you will get some Randy time now. 
+        </span>
  
 L'application de l'ensemble de ces fonctions sur les tweets sélectionnés est rapide grâce à l'utilisation de bibliothèques et aux expressions régulières (3'40").<br>         
 
@@ -114,7 +118,7 @@ La suppression de certains signes de ponctuation non informatifs (, . ; :) et un
 
 ## Feature engineering
 
-J'ai utilisé un encodeur étudié spécifiquement pour l'analyse de sentiments. SentimentIntensityAnalyser (SIA de NLTK) attribue un score de sentiment à une une phrase, en combinant simplement les scores de chaque mot de la phrase. Voici un example avec un tweet brut, après nettoyage, après tokenisation/lemmatisation:<br>
+J'ai utilisé un encodeur étudié spécifiquement pour l'analyse de sentiments. SentimentIntensityAnalyser (SIA de NLTK) attribue un score de sentiment à une une phrase, en combinant simplement les scores de chaque mot de la phrase. Voici un example avec un tweet brut, après nettoyage, puis après tokenisation/lemmatisation:<br>
 
 ![alt text](image-1.png)
 ![alt text](image-2.png)
@@ -147,24 +151,24 @@ En première approche j'ai testé le service [Azure AI Language](https://azure.m
 
 #### AutoML (sans GPU -> pas de deep learning)
 
-Azure fournit également un service d'optimisation automatique à partir des données textes vers une classification. Le modèle le plus performant est un ensemble constitué de différentes régressions logistiques et de SVM appliqué sur une modélisation du texte par TfIdF. L'exactituce atteinte est de 0,75. <br>
+Azure fournit également un service d'optimisation automatique à partir des données textes vers une classification. Le modèle le plus performant est un ensemble constitué de différentes régressions logistiques et de SVM appliqué sur une modélisation du texte par TfIdF. L'exactitude atteinte est de 0,75. <br>
 <br>
 ![alt text](image-10.png)<br>
 <i> Métriques du meilleur modèle AutoML </i>
 <br>
 <br>
-Il est possible de sauvegarder le modèle et le code python utilisé pour sa mise au point, par contre l'environnement nécessaire est complexe et très dépendant de Azure. Néanmoins cet expérimentation nous montre la voie vers le type d'embedding et d'algorithme les plus adaptés à notre problème.
+Il est possible de sauvegarder le modèle et le code python utilisé pour sa mise au point, par contre l'environnement nécessaire est complexe et très dépendant de Azure. Néanmoins cette expérimentation nous montre la voie vers le type d'embedding et d'algorithme les plus adaptés à notre problème.
 
 #### Pycaret (on peut utiliser aussi AutoSKLearn)
 
-Pycaret permet d'explorer rapidement un ensemble complet d'algorithmes de classification à partir de jeux de données avec séparation train/test.Il possède une fonctionnalité de log automatique dans MLFlow ainsi que l'ensemble des étapes de mise au point d'un modèle à l'aide de commandes simples.<br>
+Pycaret permet d'explorer rapidement un ensemble complet d'algorithmes de classification à partir de jeux de données avec séparation train/test. Il possède une fonctionnalité de log automatique dans MLFlow ainsi que l'ensemble des étapes de mise au point d'un modèle à l'aide de commandes simples.<br>
 
 ![alt text](image-13.png)
 <i> Suivi d'expérimentation MLFlow des algorithmes de classification testés par Pycaret depuis un embedding CountVectorizer du texte prétraité </i><br>
 
 
 Le modèle de stacking combinant Extra Trees, SVM et Régression logistique a les meilleures performances par contre son entrainement 75 fois plus long que les modèles simples comme la régression logistique ; il risque d'être peu réactif en production.<br>
-Au final la régression logistique apparait une fois de plus comme une solution intéressante. Une représentation en projection NCA montre que pour ce classifieur les erreurs sont situées à la frontière entre les classes et non pas aléatoirement réparties<br>
+Au final la régression logistique apparait une fois de plus comme une solution intéressante. Une représentation en projection NCA montre que pour ce classifieur les erreurs sont situées à la frontière entre les classes et non pas aléatoirement réparties.<br>
 
 ![alt text](image-14.png)<br>
 <i>Projection NCA d'une classification par régression logistique </i>
@@ -191,7 +195,7 @@ Comme le serveur MLFlow local est utilisé une copie des fichiers du modèle est
 
 <span style="background-color: #0056b3; color: white; padding: 10px; display: block;">
     <b>
-Alors que la première partie concernait des modélisations du corpus de documents par comptage de mots ou de grammes, les modèles de cette seconde partie reposent sur des modélisations de langage tenant compte du contexte des mots. Pour stocker ces données une matrice en deux dimensions n'est pas suffisante: on utilise des tenseurs, c'est-à-dire des matrices de données à dimensions multiples, cette première étape nécessite déjà des reseaux de neurones. Ensuite le modèle lui-même apporte ses traitements également par réseaux de neurones et enfin il faut ajouter une couche de sortie selon l'objectif visé, ici une classification binaire qui peut être intégrée dans le modèle ou effectué à posteriori.<br>
+Alors que la première partie concernait des modélisations du corpus de documents par comptage de mots ou de grammes, les modèles de cette seconde partie reposent sur des modélisations de langage tenant compte du contexte des mots. Pour stocker ces données une matrice en deux dimensions n'est pas suffisante: on utilise des tenseurs, c'est-à-dire des matrices de données à dimensions multiples. Cette première étape nécessite déjà des moyens de calcul conséquent (réseau de neurones à une couche, transformers). Ensuite le modèle lui-même apporte ses traitements également par réseaux de neurones et enfin il faut ajouter une couche de sortie selon l'objectif visé, ici une classification binaire qui peut être intégrée dans le modèle ou effectué à posteriori.<br>
 Le ré-entrainement complet des modèles n'est pas recommandé surtout avec un faible volume de données par contre on peut envisager d'extraire les embeddings aplatis en 2D (transfer learning) pour effectuer une tache de classification ou de ré-entrainer partiellement en figeant des couches.<br></b>
 </span>
 <br>
@@ -203,7 +207,7 @@ Le ré-entrainement complet des modèles n'est pas recommandé surtout avec un f
 
 <span style="background-color: #0056b3; color: white; padding: 10px; display: block;">
     <b>
-    L'embedding de Word2Vec encode les phrases en prenant en compte pour chaque mot le contexte dans une fenêtre définie. J'ai choisi un fenêtre de 5 mots et la méthode skip-gram (prédiction d'un mot en fonction du contexte) pour effectuer un embedding en dimension 300 depuis le texte prétraité. Cet embedding se fait avec le modèle Word2Vec (Gensim) pré-entrainé sur un large corpus. <br></b>
+    L'embedding de Word2Vec encode les phrases en prenant en compte pour chaque mot le contexte dans une fenêtre définie. J'ai choisi une fenêtre de 5 mots et la méthode skip-gram (prédiction d'un mot en fonction du contexte) pour effectuer un embedding en dimension 300 depuis le texte prétraité. Cet embedding se fait avec le modèle Word2Vec (Gensim) pré-entrainé sur un large corpus. <br></b>
 </span>
 <br>
 
@@ -221,7 +225,7 @@ Malgré l'utilisation de l'ensemble des techniques réduisant le sous- et le sur
     L'embedding Glove combine les avantages de Word2Vec (prise en compte du contexte local) et des modèles de comptage en calculant des co-occurences dans l'ensemble du corpus. De façon similaire à Word2Vec l'embedding est réalisé avec le modèle pré-entrainé et sert de couche d'embedding à un modèle sur mesure de deep learning.  <br></b>
 </span>
  <br>
-Cet embedding a été testé avec un réseau de neurones de structure similaire à celui mis au point pour Word2Vec et optimisé avec Keras Tuner. Les résultats sont meilleur (val_accuracy 0.72 pour 0.7 avec Word2Vec).
+Cet embedding a été testé avec un réseau de neurones de structure similaire à celui mis au point pour Word2Vec et optimisé avec Keras Tuner. Les résultats sont meilleurs (val_accuracy 0,72 pour 0,7 avec Word2Vec).
 
 ## USE
 
@@ -231,7 +235,7 @@ USE produit des représentations contextuelles qui tiennent compte de l'ensemble
 </span>
  <br>
 
-En utilisant USE comme une boite noire et en ajustant ses poids à nos données on a immédiatement un résultat de l'ordre des meilleurs modèles de l'approche classique (accuracy_test 0.74).<br>
+En utilisant USE comme une boite noire et en ajustant ses poids à nos données on a immédiatement un résultat de l'ordre des meilleurs modèles de l'approche classique (accuracy_test 0,74).<br>
 
 ## Bert
 
@@ -256,7 +260,7 @@ C'est la solution qui sera retenue car différents classifieurs appliqués sur l
 
 ## Roberta (modèle twitter-roberta-base-sentiment)
 
-Avec une variante de Bert entrainé spécifiquement avec des tweet la version pré-entrainée donne un résultat banal, mais le fine-tuning de l'ordre de 80% permet de mieux prédire la classe 1 (sentiment négatif) que la classe 0.<br>
+Avec une variante de Bert entrainé spécifiquement avec des tweets la version pré-entrainée donne un résultat banal, mais le fine-tuning permet d'atteindre une prédiction exacte de l'ordre de 80% et prédit mieux la classe 1 (sentiment négatif) que la classe 0.<br>
 
 # Étape 3 : Déploiement
 
@@ -277,7 +281,7 @@ Cinq groupes de tests ont été mis en place:
 1. Disponibilité du modèle: Vérifie la présence du conteneur dans l'espace de stockage et la présence des fichiers nécessaires à son exécution
 2. Modèle: Passe en mode test et vérifie que le modèle ne se charge pas
 3. Test de l'app: en mode test instancie un mock qui simule un modèle et teste le predict de l'app.
-4. Test des routes: dans le même contexte que le test précédent, vérifie les autres routes et que l'absence de texte conduit à une erreur
+4. Test des routes: dans le même contexte que le test précédent, vérifie les autres routes ainsi que l'absence de texte conduit à une erreur
 5. Test de logging: Génère des traces qui doivent être capturées par Azure Application Insight
 
 💡Le passage en mode test à travers une variable d'environnement permet d'éviter de charger le modèle et de reproduire un chemin local. Cela est particulièrement utile pour les tests dans Github Actions.
@@ -287,15 +291,18 @@ Cinq groupes de tests ont été mis en place:
 [![Lien vers l'api hébergée](image-22.png)](https://tweetsentimentanalysiseco-fuetaqf3hbezegch.francecentral-01.azurewebsites.net/)
 
 
-L'API utilise DeepTranslator (Google), accepte jusqu'à 500 caractères et supporte tout types de caractères. Des tests de sécurité manuels ont été menés, l'application traite les scripts comme des chaines - par contre j'ai évité de les stocker.
+L'API utilise DeepTranslator (Google), accepte jusqu'à 500 caractères et supporte tout types de caractères. Des tests de sécurité manuels ont été menés ; l'application traite les scripts comme des chaines - par contre j'ai évité de les stocker 😉.
 
 # Étape 4 : Suivi et amélioration
 
 ## Performance et incidents
 
-Le modèle est particulièrement réactif avec un temps de réponse de l'ordre de 200-300 ms. Les volumes de transaction et le temps d'utilisation du CPU sont très faibles vu la légèreté du modèle et l'économie de moyens de calcul faite en ne recourant pas aux tenseurs.
+Le modèle est particulièrement réactif avec un temps de réponse de l'ordre de 200-300 ms. Les volumes de transactions et le temps d'utilisation du CPU sont très faibles vu la légèreté du modèle et l'économie de moyens de calcul faite en ne recourant pas aux tenseurs.
 
 ## Détection de prévisions incorrectes
+
+![alt text](image-25.png)
+<i>Détection des transactions sur Application Insight </i>
 
 Une requête dans les journaux de suivi a été sauvegardée et est ré-utilisée dans une alerte qui envoie un email d'alerte dès qu'il y a plus de 5 détections de prédictions incorrectes en 5 minutes.
 
@@ -318,4 +325,16 @@ La mise en oeuvre de MLOPS est une vraie école de rigueur au départ:<br>
 - le versionning dans Git/Github demande de la pratique
 - Github actions est puissant mais il faut savoir repenser les choses dans un environnement isolé
 
-Quand on a passé le temps nécessaire à la mise en place de ces étapes le déploiement devient une formalité 😉 par contre il ne faut pas négliger l'étape ultime de documentation.
+Quand on a passé le temps nécessaire à la mise en place de ces étapes le déploiement devient une formalité 😉 par contre il ne faut pas négliger l'étape ultime de documentation.<br>
+
+## Au fait, combien ça coûte tout ça ? 🤑 <br>
+Au prix de l'acquisition des compétences techniques nécessaires à la matrise d'Azure, la solution est très économique dans le cadre d'une utilisation raisonnée.<br>
+
+| Service      | Coût mensuel      | Limitation      |
+|-----------------|---------------|----------------|
+| Compte de stockage    | 0.02 €   | < 1 Go   |
+| Web App    | 5 €   | B1 partagé (1 Go)   |
+| Espace Log Analytics    | gratuit   | < 5 Go puis 2,3 €/Go   |
+| Règle d'action    | gratuit   | Notification par email (SMS: 0,02 €)   |
+
+La facture augmente de quelques euros si on choisit d'héberger le pipeline data, et de ré-entrainer le modèle en ligne mais reste en-dessous de 10 € par mois.
