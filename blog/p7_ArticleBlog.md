@@ -88,34 +88,20 @@ Les méthodes plus récentes possèdent des outils de prétraitement, surtout la
 
 ### Traitement du "langage tweet" 
 
-"""plaintext 
-Original: Ok....momentarily diverted. Try this again.  Goodnight, and sweet dreams!    http://www.youtube.com/watch?v=5WCgX4VQp2o
-Modifié: Ok....momentarily diverted. Try this again.  Goodnight, and sweet dreams!    http://www.youtube.com/watch?v=5WCgX4VQp2o
---------------------------------------------------  
-"""
-
-
-
-
 Les tweets constituent une variante du langage commun avec des expressions exacerbées (répétitions), imagées (écomticon) et l'utilisation de hashtags, d'url, de citations. Pour chaque étape il faut juger si le texte concerné peut avoir une valeur informative. Voici ce qui a été appliqué:
 
 - Détection des expressions héritées de html générées lors du passage en texte brut (ex: &Amp)
-- Remplacement des url et des citations par des balises <url> et <mention> <br>
+- Remplacement des url et des citations par des balises &lt;url&gt; et &lt;mention&gt;
         Original: was totally crushed when I found that much looked forward to plane read: Air Kisses by @zotheysay, had sold out at airport <br>
-        <span style="color: darkgreen;">Modifié: was totally crushed when I found that much looked forward to plane read: Air Kisses by <mention>, had sold out at airport 
-        
-        
+        <span style="color: darkgreen;">Modifié: was totally crushed when I found that much looked forward to plane read: Air Kisses by &lt;mention&gt;, had sold out at airport      
 - Réduction de la répétition des caractères, dans cet exemple les points d'exclamation<br>
         Original: Sitting in the airport, waiting for the plane to arrive, so we can depart!!!   http://twitpic.com/6ebzo<br>
-        <span style="color: mediumspringgreen;">Modifié: Sitting in the airport, waiting for the plane to arrive, so we can depart!! <url> 
-        
-
-
+        <span style="color: mediumspringgreen;">Modifié: Sitting in the airport, waiting for the plane to arrive, so we can depart!! &lt;url&gt; 
 - Utilisation de dictionnaires d'abbréviations, d'expression d'argot et d'emoticons pour interpréter les caractères
 - Suppression des caractères spéciaux résiduels (@, #, caractères non ASCII)
 - Expansion des contractions et application d'un correcteur d'orthographe (languagetoolPython)<br>
         Original: @DavidArchie Hope you, your team, Cookie &amp; his crew have a safe trip home! You guys are all amazing! Hope you'll get some R&amp;R time now.<br>
-        <span style="color: forestgreen;">Modifié: <mention> Hope you, your team, Cookie & his crew have a safe trip home! You guys are all amazing! Hope you will get some Randy time now. 
+        <span style="color: forestgreen;">Modifié: &lt;mention&gt; Hope you, your team, Cookie & his crew have a safe trip home! You guys are all amazing! Hope you will get some Randy time now. 
         
  
 L'application de l'ensemble de ces fonctions sur les tweets sélectionnés est rapide grâce à l'utilisation de bibliothèques et aux expressions régulières (3'40").<br>         
