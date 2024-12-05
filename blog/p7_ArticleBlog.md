@@ -88,6 +88,15 @@ Les méthodes plus récentes possèdent des outils de prétraitement, surtout la
 
 ### Traitement du "langage tweet" 
 
+"""plaintext 
+Original: Ok....momentarily diverted. Try this again.  Goodnight, and sweet dreams!    http://www.youtube.com/watch?v=5WCgX4VQp2o
+Modifié: Ok....momentarily diverted. Try this again.  Goodnight, and sweet dreams!    http://www.youtube.com/watch?v=5WCgX4VQp2o
+--------------------------------------------------  
+"""
+
+
+
+
 Les tweets constituent une variante du langage commun avec des expressions exacerbées (répétitions), imagées (écomticon) et l'utilisation de hashtags, d'url, de citations. Pour chaque étape il faut juger si le texte concerné peut avoir une valeur informative. Voici ce qui a été appliqué:
 
 - Détection des expressions héritées de html générées lors du passage en texte brut (ex: &Amp)
