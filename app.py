@@ -9,6 +9,7 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 from azure.monitor.opentelemetry.exporter import AzureMonitorTraceExporter
 from datetime import datetime
+
 # Configuration OpenTelemetry pour Azure Application Insights
 resource = Resource.create(attributes={"service.name": "VotreApplication"})
 trace.set_tracer_provider(TracerProvider(resource=resource))
@@ -102,7 +103,7 @@ def home():
                     predictions = model.predict(input_data)
                 except Exception as e:
                     log_error("PredictionError", e)
-                    raise RuntimeError("Erreur lors de la prédiction.")
+                    return render_template("index.html", error="Erreur lors de la prédiction.")
                 
                 sentiment = "Positif" if predictions[0] == 0 else "Négatif"
                 if feedback == "incorrect":
@@ -164,8 +165,7 @@ def predict():
         log_error("Error", f"Erreur générale : {str(e)}")
         return jsonify({"error": "Erreur lors du traitement de la requête"}), 500
 
-# Expositon de la documentation de l'API
-# Route pour exposer le fichier openapi.json
+# Exposition de la documentation de l'API
 @app.route('/openapi.json', methods=['GET'])
 def get_openapi_json():
     return send_from_directory('static/api_docs', 'openapi.json')

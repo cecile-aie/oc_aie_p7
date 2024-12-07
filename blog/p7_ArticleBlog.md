@@ -75,7 +75,7 @@ N'ayant pas de données client j'ai utilisé un jeu de données [Open Source](ht
 
 ## Sélection du jeu de données
 
-Afin de couvrir le vocabulaire métier les tweets utilisant les termes typiques du transport aérien on été sélectionnés. J'ai ensuite appliqué LanguageDectector (Spacy) pour limiter aux tweets en langue anglaise. Après ré-équiilibrage par élimination j'ai un jeu de données de 6 473 tweets.
+Afin de couvrir le vocabulaire métier les tweets utilisant les termes typiques du transport aérien on été sélectionnés. J'ai ensuite appliqué LanguageDectector (Spacy) pour limiter aux tweets en langue anglaise. Après ré-équiilibrage par élimination j'ai un jeu de données de 6 468 tweets.
 
 ## Nettoyage
 
@@ -316,7 +316,8 @@ D'un point de vue ML la leçon est claire: même si du côté du développeur ce
 
 La mise en oeuvre de MLOPS est une vraie école de rigueur au départ:<br>
 - il faut concevoir les trackings de façon à pouvoir les comparer
-- logger les modèles demande de respecter la méthodologie de MLFlow
+- l'ensemble de la boucle doit d'ailleurs être définie précisément au risque de se retrouver dans des impasses de conflits de dépendances
+- logger les modèles exige de respecter la méthodologie de MLFlow
 - le versionning dans Git/Github demande de la pratique
 - Github actions est puissant mais il faut savoir repenser les choses dans un environnement isolé
 
