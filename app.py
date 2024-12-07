@@ -11,7 +11,7 @@ from azure.monitor.opentelemetry.exporter import AzureMonitorTraceExporter
 from datetime import datetime
 
 # Configuration OpenTelemetry pour Azure Application Insights
-resource = Resource.create(attributes={"service.name": "VotreApplication"})
+resource = Resource.create(attributes={"service.name": "Analyse de Sentiment de Tweets"})
 trace.set_tracer_provider(TracerProvider(resource=resource))
 instrumentation_key = "4071129e-e96b-494a-b0c7-24e6dac41b18"
 exporter = AzureMonitorTraceExporter.from_connection_string(
