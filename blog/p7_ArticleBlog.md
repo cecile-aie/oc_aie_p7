@@ -12,7 +12,7 @@ author: "Cécile"
 
 Un client dans le domaine du transport aérien nous a demandé un prototype fonctionnel d'un modèle permettant de détecter les tweets à connotation négative. Cette problématique liée à la modélisation du langage (Natural Language Processing ou NLP) est déjà largement étudiée. On trouve pour y répondre un arsenal de bibliothèques, de modèles spécifiquement entrainés, voire de services entièrement packagés.<br>
 J'ai testé différentes approches avec un objectif focalisé autant sur l'exactitude de prédiction (l'accuracy) que sur le temps d'entrainement et le temps de réponse du modèle une fois déployé.<br>
-L'objectif de cet article est d'illustrer comment MLOPS nous aide dans une démarche d'élaboration et de mise en production d'un modèle. Je n'ai pas détaillé le travail de conception Machine Learning/Deep Learning dans dans le cadre du NPL (Language Natural Processing) mais il y a j'espère suffisament d'encarts d'information pour que les non-spécialistes s'y retrouvent 😜.
+L'objectif de cet article est d'illustrer comment MLOPS nous aide dans une démarche d'élaboration et de mise en production d'un modèle. Je n'ai pas détaillé le travail de conception Machine Learning/Deep Learning dans le cadre du NPL (Language Natural Processing) mais il y a j'espère suffisament d'encarts d'information pour que les non-spécialistes s'y retrouvent 😜.
 
 
 ## Les outils : Bibliothèques d'analyse & méthodes de modélisation du langage
@@ -26,7 +26,7 @@ Afin de pouvoir mener un calcul de classification il nous faut transformer le te
     <b>
     Les méthodes utilisées avant le machine learning, basées sur des dictionnaires associant chaque mot à un score sont encore utilisées. J'ai pu tester SentimentIntensityAnalysis (NLTK) et TextBlob.<br>
     De façon plus élaborée on peut représenter chaque mot unique (token) par un vecteur dont les composantes sont ses occurences dans les différents tweets (comptage simple) ou encore le rapport entre sa fréquence dans un tweet et celle dans l'ensemble des tweets de l'échantillon (méthode TFIdF). Les modélisation utilisées sont CountVectorizer et TFIdF.<br>
-    Viennent ensuite des méthodes plus élaborées nécessitant la mise en oeuvre de réseaux de neurones: pour réaliser la modélisation des mots on va considérer leur contexte (les mots précédents et suivants, les différentes phrases), selon une certaine fenêtre et certaines conditions d'apparition.Les modèles les plus récents permettent de donner plus d'importance à certaines associations de mots (mécanisme d'attention). J'ai exploré successivement Word2Vec, GloVE, USE, Bert, et une variation Roberta spécialisée dans l'analyse de tweet. <br></b>
+    Viennent ensuite des méthodes plus élaborées nécessitant la mise en oeuvre de réseaux de neurones: pour réaliser la modélisation des mots on va considérer leur contexte (les mots précédents et suivants, les différentes phrases), selon une certaine fenêtre et certaines conditions d'apparition. Les modèles les plus récents permettent de donner plus d'importance à certaines associations de mots (mécanisme d'attention). J'ai exploré successivement Word2Vec, GloVE, USE, Bert, et une variation Roberta spécialisée dans l'analyse de tweet. <br></b>
 </span>
 
 ## La méthodologie : MLOPS
@@ -128,8 +128,8 @@ La métrique principale sera bien sûr l'exactitude globale (accuracy) et pour d
 
 ## Baseline
 
-<img src="image-5.png" alt="Matrice de confusion SIA" width="300" height="300">
-<img src="image-6.png" alt="Rapport de classification SIA" width="300" height="150"><br>
+<img src="image-27.png" alt="Matrice de confusion SIA" width="300" height="300">
+<img src="image-28.png" alt="Rapport de classification SIA" width="300" height="150"><br>
 <i> Matrice de confusion et rapport de classifcation des valeurs de score SIA vs étiquettes réelles </i> <br> 
 <br>
 En comparant la colonne de score SIA aux étiquettes réelles on obtient une accuracy de 0,66. Par contre la matrice de confusion montre que la classe 1 (sentiment négatif) est moins bien prédite que la classe 0.<br>
@@ -162,19 +162,19 @@ Pycaret permet d'explorer rapidement un ensemble complet d'algorithmes de classi
 <i> Suivi d'expérimentation MLFlow des algorithmes de classification testés par Pycaret depuis un embedding CountVectorizer du texte prétraité </i><br>
 
 
-Le modèle de stacking combinant Extra Trees, SVM et Régression logistique a les meilleures performances par contre son entrainement est 75 fois plus long que les modèles simples comme la régression logistique ; il risque d'être peu réactif en production.<br>
+Le modèle de stacking combinant RandomForest, GradientBoosting et Régression logistique a les meilleures performances par contre son entrainement est 70 fois plus long que les modèles simples comme la régression logistique ; il risque d'être peu réactif en production.<br>
 Au final la régression logistique apparait une fois de plus comme une solution intéressante. Une représentation en projection NCA montre que pour ce classifieur les erreurs sont situées à la frontière entre les classes et non pas aléatoirement réparties.<br>
 
-![alt text](image-14.png)<br>
-<i>Projection NCA d'une classification par régression logistique </i>
+![alt text](image-29.png)<br>
+<i>Projection NCA d'une classification par régression logistique depuis TfIdf </i>
 
 #### Optimisation de la régression logistique
 
 Soyons imaginatif: la régression logistique est plutôt efficace et nous avons par ailleurs l'information de score de sentiment.<br>
-Quelques essais de paramètres de la régression logistique et le pipeline est prêt. Même en utilisant la colonne de texte sans pré-traitement les performances sont presque aussi bonnes sur l'échantillon de test que AutoML et un recall de 0,76 sur la classe 1, plutôt bien prédite.<br>
+Quelques essais de paramètres de la régression logistique et le pipeline est prêt. Même en utilisant la colonne de texte sans pré-traitement les performances sont presque aussi bonnes sur l'échantillon de test que AutoML. La fiabilité des prédictions est bien équilibrée entre les classes.<br>
 
-<img src="image-15.png" alt="Matrice de confusion SIA" width="400" height="300">
-<img src="image-16.png" alt="Rapport de classification SIA" width="250" height="110"><br>
+<img src="image-30.png" alt="Matrice de confusion SIA" width="400" height="300">
+<img src="image-31.png" alt="Rapport de classification SIA" width="250" height="110"><br>
 <i>Matrice de confusion et rapport de classification du modèle combinant régression logistique et SIA </i>
 
 ### Enregistrement d'un modèle
