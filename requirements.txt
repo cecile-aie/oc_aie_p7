@@ -1,10 +1,16 @@
+# dépendances du modèle (Bert)
 mlflow==2.17.0
-cloudpickle==3.0.0
-nltk==3.9.1
-numpy==1.23.5
-psutil==5.9.0
-scikit-learn==1.4.2
-scipy==1.11.4
+cloudpickle==3.1.0
+numpy==1.26.0
+pandas==2.2.3
+scikit-learn==1.5.2
+scipy==1.13.1
+torch==2.0.1  # Version CPU de PyTorch
+torchvision==0.15.2  # Version CPU de Torchvision
+transformers==4.47.0
+jinja2==3.1.4
+
+# fonctionnement de l'app
 Flask
 azure-storage-blob
 gunicorn
@@ -16,7 +22,4 @@ azure-monitor-opentelemetry-exporter
 opentelemetry-api
 opentelemetry-sdk
 
-# sous Windows il a été nécessaire d'installer:
-# Visual C++ build Tools (site Microsoft)
-# jsonschema
-# pygments
+--extra-index-url https://download.pytorch.org/whl/cpu
