@@ -54,7 +54,7 @@ Versions html:
 
 ## Script d'exécution de l'application
 
-Le [script](app.py) peut être exécuté en local et inclus dans un conteneur de déploiement. Il inclut les tests unitaires et l'envoi de traces via opentelemetry. 
+Le [script](app.py) peut être exécuté en local et inclus dans un conteneur de déploiement. Il comprend les tests unitaires et l'envoi de traces via opentelemetry. 
 
 # Outils et méthodes utilisés
 
