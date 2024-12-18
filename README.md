@@ -33,11 +33,17 @@ Documentation de l'API <br>
 <br>
 [Accès direct à la documentation en json](https://tweetseco-aqb3breuc4f6bsaj.francecentral-01.azurewebsites.net/openapi.json)  <br>
 
-# Environnement
+# Réutilisation du code
+
+## Données
+
+Un jeu de données [Open Source](https://www.kaggle.com/datasets/kazanova/sentiment140) a été utilisé. Tout échantillon de textes étiquettés avec au minimum les colonnes ["text", "target"] est acceptable.
+
+## Environnement
 
 Utiliser [requirements](requirements.txt), Python 3.9 recommandé.
 
-# Notebooks
+## Notebooks
 
 [Dossier github notebooks et compléments](https://github.com/cecile-aie/oc_aie_p7/tree/main/notebooks)<br>
 
@@ -45,6 +51,10 @@ Versions html:
 - [Prétraitement](./notebooks/P7_preprocessing.html)
 - [Modèle classique](./notebooks/P7_approche_classique.html)
 - [Modèles avancés](./notebooks/P7_modele_avance.html)
+
+## Script d'exécution de l'application
+
+Le [script](app.py) peut être exécuté en local et inclus dans un conteneur de déploiement. Il inclut les tests unitaires et l'envoi de traces via opentelemetry. 
 
 # Outils et méthodes utilisés
 
