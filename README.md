@@ -39,7 +39,7 @@ Utiliser [requirements](requirements.txt), Python 3.9 recommandé.
 
 # Notebooks
 
-[dossier notebooks et compléments](./notebooks/P7_preprocessing.html))<br>
+[Dossier github notebooks et compléments](https://github.com/cecile-aie/oc_aie_p7/tree/main/notebooks)<br>
 
 Versions html:
 - [Prétraitement](./notebooks/P7_preprocessing.html)
