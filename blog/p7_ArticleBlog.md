@@ -104,7 +104,7 @@ Les tweets constituent une variante du langage commun avec des expressions exace
         <span style="color: forestgreen;">Modifié: &lt;mention&gt; Hope you, your team, Cookie & his crew have a safe trip home! You guys are all amazing! Hope you will get some Randy time now. 
         
  
-L'application de l'ensemble de ces fonctions sur les tweets sélectionnés est rapide grâce à l'utilisation de bibliothèques et aux expressions régulières (3'40").<br>         
+L'application de l'ensemble de ces fonctions sur les tweets sélectionnés est rapide grâce à l'utilisation de bibliothèques et aux expressions régulières (3'40" de temps de traitement).<br>         
 
 ### Réduction du vocabulaire
 
@@ -211,7 +211,7 @@ Une fois l'embedding réalisé j'ai testé la capacité de traitement avec des r
 ![alt text](image-19.png)
 <i>Utilisation de la fonction compare de MLFlow </i><br>
 
-Malgré l'utilisation de l'ensemble des techniques réduisant le sous- et le sur-apprentissage (couches denses intermédiaires, doublement de la couche LSTM, dropout, régularisation) les résultats sont moyens. Le meilleur modèle utilise LSTM bi-directionnel, je l'ai optimisé automatiquement (structure et paramètres) grâce à Keras tuner mais les résultats sont moins bons que le modèle retenu dans l'approche classique.
+Malgré l'utilisation de l'ensemble des techniques réduisant le sous- et le sur-apprentissage (couches denses intermédiaires, doublement de la couche LSTM, dropout, régularisation) les résultats sont moyens. Le meilleur modèle utilise LSTM bi-directionnel. Je l'ai optimisé automatiquement (structure et paramètres) grâce à Keras tuner mais les résultats sont moins bons que le modèle retenu dans l'approche classique.
 
 ## Embedding Glove
 
@@ -220,7 +220,7 @@ Malgré l'utilisation de l'ensemble des techniques réduisant le sous- et le sur
     L'embedding Glove combine les avantages de Word2Vec (prise en compte du contexte local) et des modèles de comptage en calculant des co-occurences dans l'ensemble du corpus. De façon similaire à Word2Vec l'embedding est réalisé avec le modèle pré-entrainé et sert de couche d'embedding à un modèle sur mesure de deep learning.  <br></b>
 </span>
  <br>
-Cet embedding a été testé avec un réseau de neurones de structure similaire à celui mis au point pour Word2Vec et optimisé avec Keras Tuner. Les résultats sont meilleurs (val_accuracy 0,72 pour 0,7 avec Word2Vec).
+Cet embedding a été testé avec un réseau de neurones de structure similaire à celui mis au point pour Word2Vec et optimisé avec Keras Tuner. Les résultats sont meilleurs (val_accuracy 0,72 pour 0,69 avec Word2Vec).
 
 ## USE
 
@@ -230,7 +230,7 @@ USE produit des représentations contextuelles qui tiennent compte de l'ensemble
 </span>
  <br>
 
-En utilisant USE comme une boite noire et en ajustant ses poids à nos données on a immédiatement un résultat de l'ordre des meilleurs modèles de l'approche classique (accuracy_test 0,74).<br>
+En utilisant USE comme une boite noire et en ajustant ses poids à nos données on a immédiatement et sans recourt à LSTM un résultat de l'ordre des meilleurs modèles de l'approche classique (accuracy 0,76).<br>
 
 ## Bert
 
@@ -238,7 +238,7 @@ Malgré la bonne performance de USE l'utilisation des moyens du deep learning (G
 
 <span style="background-color: #0056b3; color: white; padding: 10px; display: block;">
     <b>
-BERT (Bidirectional Encoder Representations from Transformers) est conçu pour comprendre le contexte des mots de façon bi-directionnelle. Il utilise un mécanisme d'attention pour comprendre les relations entre les mots de la phrase. Le pré-entrainement inclut la prédiction de mots masqués et l'établissement de relations entre les phrases. <br></b>
+BERT (Bidirectional Encoder Representations from Transformers) est conçu pour comprendre le contexte des mots de façon bi-directionnelle. Il utilise un mécanisme d'attention pour modéliser les relations entre les mots de la phrase. Le pré-entrainement inclut la prédiction de mots masqués et l'établissement de relations entre les phrases. <br></b>
 </span>
  <br>
 La flexibilité et la puissance de Bert nous permettent d'envisager plusieurs utilisations:<br>
@@ -251,16 +251,16 @@ Un simple ré-entrainement depuis un modèle pré-entrainé est rapide (3'40") e
 ![alt text](image-20.png)<br>
 <i>Résultat du modèle Bert pré-entrainé (jeu de test)</i>
 
-C'est la solution qui sera retenue car différents classifieurs appliqués sur l'embedding extrait de la dernière couche cachée conduit au même résultat avec un temps de calcul plus long et le modèle fine-tuné permet de gagner 1% mais nécessite presque 2h d'entrainement.
+C'est la solution qui sera retenue car différents classifieurs appliqués sur l'embedding extrait de la dernière couche cachée conduit au même résultat avec un temps de calcul plus long et le modèle fine-tuné permet de gagner 1% mais nécessite un entrainement plus long.<br>
 
 ## Roberta (modèle twitter-roberta-base-sentiment)
 
-Avec une variante de Bert entrainé spécifiquement avec des tweets la version pré-entrainée donne un résultat banal, mais le fine-tuning permet d'atteindre une prédiction exacte de l'ordre de 80% et prédit mieux la classe 1 (sentiment négatif) que la classe 0.<br>
+Avec une variante de Bert entrainée spécifiquement avec des tweets la version pré-entrainée donne un résultat banal, mais le fine-tuning permet d'atteindre une prédiction exacte de l'ordre de 80% et prédit mieux la classe 1 (sentiment négatif) que la classe 0.<br>
 
 # Étape 3 : Déploiement
 
-Le modèle Bert pré-entrainé n'a pas pu être déployé sur la solution choisie (Azure compte gratuit). Le poids du modèle n'est pas en cause, il a été allégé par quantisation et élagage. Par contre il n'a pas été possible de concilier les versions des dépendances entre les environnements locaux et celui de la plateforme webapp fournie par Azure.<br>
-J'ai donc déployé le modèle combinant la régression logistique avec SIA.
+Le modèle Bert pré-entrainé a été déployé de façon expérimentale sur azure à cette adresse [Analyse de sentiment des tweets avec Bert](https://tweetbert-cvd6fgduhja7c7cw.francecentral-01.azurewebsites.net/). Il faut noter que si ses prédictions sont les meilleures obtenues, un sur-apprentissage a été détecté lors de l'entrainement.<br>
+J'ai finalement déployé le modèle combinant la régression logistique avec SIA, favorisant une solution légère, simple et robuste.
 
 ## Pipeline de déploiement continu
 
@@ -281,7 +281,7 @@ Cinq groupes de tests ont été mis en place:
 
 💡Le passage en mode test à travers une variable d'environnement permet d'éviter de charger le modèle et de reproduire un chemin local. Cela est particulièrement utile pour les tests dans Github Actions.
 
-## API déployée [Analyse de sentiment des tweets](https://tweetseco-aqb3breuc4f6bsaj.francecentral-01.azurewebsites.net/)
+## API déployée [Analyse de sentiment des tweets](https://tweetseco-aqb3breuc4f6bsaj.francecentral-01.azurewebsites.net/)  
 
 [![Lien vers l'api hébergée](image-22.png)](https://tweetseco-aqb3breuc4f6bsaj.francecentral-01.azurewebsites.net/)
 
@@ -293,6 +293,12 @@ L'API utilise DeepTranslator (Google), accepte jusqu'à 500 caractères et suppo
 ## Performance et incidents
 
 Le modèle est particulièrement réactif avec un temps de réponse de l'ordre de 200-300 ms. Les volumes de transactions et le temps d'utilisation du CPU sont très faibles vu la légèreté du modèle et l'économie de moyens de calcul faite en ne recourant pas aux tenseurs.
+
+## Tests de charge
+J'ai utilisé LOCUST pour simuler des utilisateurs simultannés (50 sur 1 minute) ou une charge constante sur 10 minutes sans générer de rupture.
+
+![alt text](image-32.png)
+<i>Simulation 50 utilisateurs simultannés (1 minute)</i>
 
 ## Détection de prévisions incorrectes
 
@@ -334,3 +340,8 @@ Au prix de l'acquisition des compétences techniques nécessaires à la matrise 
 | Règle d'action    | gratuit   | Notification par email (SMS: 0,02 €)   |
 
 La facture augmente de quelques euros si on choisit d'héberger le pipeline data, et de ré-entrainer le modèle en ligne mais reste en-dessous de 10 € par mois.
+
+## Pour les passionnés: le code ... <br>
+- [Prétraitement](./notebooks/P7_preprocessing.html)
+- [Modèle classique](../notebooks/P7_approche_classique.html)
+- [Modèles avancés](../notebooks/P7_modele_avance.html)

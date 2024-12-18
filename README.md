@@ -35,7 +35,16 @@ Documentation de l'API <br>
 
 # Environnement
 
-Utiliser [requirements](requirements.txt), Python 3.11 recommandé.
+Utiliser [requirements](requirements.txt), Python 3.9 recommandé.
+
+# Notebooks
+
+[dossier notebooks et compléments](./notebooks/P7_preprocessing.html))<br>
+
+Versions html:
+- [Prétraitement](./notebooks/P7_preprocessing.html)
+- [Modèle classique](./notebooks/P7_approche_classique.html)
+- [Modèles avancés](./notebooks/P7_modele_avance.html)
 
 # Outils et méthodes utilisés
 
